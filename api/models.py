@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
@@ -93,6 +94,8 @@ class Expediteur(models.Model):
         return self.nom_expediteur
 class Colis(models.Model):
     code_colis = models.AutoField(primary_key=True)
+    code_barre = models.CharField(max_length=12, unique=True, null=True, blank=True)
+
     nom_clt = models.CharField(max_length=255)
     gouvernement = models.CharField(max_length=255)
     ville = models.CharField(max_length=255)
@@ -108,8 +111,10 @@ class Colis(models.Model):
     mode_paiement = models.CharField(max_length=255)
     expediteur = models.ForeignKey(Expediteur, on_delete=models.SET_NULL, null=True, blank=True)
 
+        
     def __str__(self):
         return f"{self.nom_clt} - {self.code_colis}"
+
 class Depot(models.Model):
     id_depot = models.AutoField(primary_key=True)
     user = models.OneToOneField(Account, null=True, blank=True, on_delete=models.CASCADE)
